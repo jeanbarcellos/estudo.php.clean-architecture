@@ -1,9 +1,22 @@
 <?php
 
-use App\Domain\Entities\User;
+use App\Adapters\Database\UserRepository;
+use App\UseCases\UserCreateUseCase;
+use Core\Iterator\InputData;
 
 require __DIR__ . '/../bootstrap.php';
 
-$user = new User('Jean Barcellos', 'jeanbarcellos@hotmail.com');
+$userCase = new UserCreateUseCase(new UserRepository());
 
-var_dump($user);
+$inputData = InputData::create([
+    'name' => 'Jean Barcellos',
+    'email' => 'jeanbarcellos@hotmail.com',
+]);
+
+echo "inputData";
+var_dump($inputData);
+
+$outputData = $userCase->handle($inputData);
+
+echo "outputData";
+var_dump($outputData);
