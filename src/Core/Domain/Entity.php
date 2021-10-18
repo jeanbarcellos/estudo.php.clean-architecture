@@ -4,5 +4,10 @@ namespace Core\Domain;
 
 abstract class Entity
 {
-    protected $id;
+    protected string $id;
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
 }
