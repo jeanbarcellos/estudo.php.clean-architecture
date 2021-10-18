@@ -1,0 +1,17 @@
+# dependencies
+/node_modules
+/vendor
+
+# projects IDEs
+/nbproject
+.vscode
+
+# testing
+/coverage
+.phpunit.result.cache
+
+# locks
+composer.lock
+
+# custom files
+*.log

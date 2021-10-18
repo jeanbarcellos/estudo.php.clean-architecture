@@ -1,0 +1,15 @@
+{
+  "name": "jeanbarcellos/estudo.php.clean-architecture",
+  "authors": [
+    {
+      "name": "Jean Barcellos",
+      "email": "jeanbarcellos@hotmail.com"
+    }
+  ],
+  "require": {},
+  "autoload": {
+    "psr-4": {
+      "": "src"
+    }
+  }
+}
