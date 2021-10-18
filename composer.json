@@ -6,10 +6,12 @@
       "email": "jeanbarcellos@hotmail.com"
     }
   ],
-  "require": {},
   "autoload": {
     "psr-4": {
       "": "src"
     }
+  },
+  "require-dev": {
+    "symfony/var-dumper": "^5.3"
   }
 }
