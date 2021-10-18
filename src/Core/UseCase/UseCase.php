@@ -1,9 +1,9 @@
 <?php
 
-namespace Core\Iterator;
+namespace Core\UseCase;
 
-use Core\Iterator\InputData;
-use Core\Iterator\OutputData;
+use Core\UseCase\InputData;
+use Core\UseCase\OutputData;
 
 abstract class UseCase
 {
