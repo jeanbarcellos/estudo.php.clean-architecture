@@ -2,7 +2,7 @@
 
 use App\Adapters\Database\UserRepository;
 use App\UseCases\UserCreateUseCase;
-use Core\Iterator\InputData;
+use Core\UseCase\InputData;
 
 require __DIR__ . '/../bootstrap.php';
 
@@ -14,9 +14,9 @@ $inputData = InputData::create([
 ]);
 
 echo "inputData";
-var_dump($inputData);
+dump($inputData->getData());
 
 $outputData = $userCase->handle($inputData);
 
 echo "outputData";
-var_dump($outputData);
+dump($outputData->getData());
