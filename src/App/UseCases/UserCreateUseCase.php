@@ -4,9 +4,9 @@ namespace App\UseCases;
 
 use App\Domain\Entities\User;
 use App\Domain\Repositories\UserRepositoryInterface;
-use Core\Iterator\InputData;
-use Core\Iterator\OutputData;
-use Core\Iterator\UseCase;
+use Core\UseCase\InputData;
+use Core\UseCase\OutputData;
+use Core\UseCase\UseCase;
 
 class UserCreateUseCase extends UseCase
 {
@@ -22,16 +22,17 @@ class UserCreateUseCase extends UseCase
 
     public function handle(InputData $inputData): OutputData
     {
-        $data = $inputData->getData();
+        $inputData->validate();
 
-        $user = new User($data['name'], $data['email']);
+        $user = new User($inputData->getValue('name'), $inputData->getValue('email'));
 
         $this->repository->insert($user);
 
         return new OutputData([
-            'id' => rand(1, 100),
+            'id' => $user->getId(),
             'name' => $user->getName(),
             'email' => $user->getEmail(),
+            'createdAt' => $user->getCreatedAt(),
         ]);
     }
 }
