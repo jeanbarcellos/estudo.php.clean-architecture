@@ -3,10 +3,11 @@
 namespace Core\UseCase;
 
 use ArrayAccess;
+use Core\Interfaces\Arrayable;
 use ReflectionClass;
 use RuntimeException;
 
-abstract class Boundary implements ArrayAccess
+abstract class Boundary implements ArrayAccess, Arrayable
 {
     private const GETTER_PREFIX = 'get';
 
@@ -69,6 +70,11 @@ abstract class Boundary implements ArrayAccess
     public function offsetUnset($offset)
     {
         throw new RuntimeException('Action not allowed!');
+    }
+
+    public function toArray(): array
+    {
+        return get_object_vars($this);
     }
 
     public static function create(array $data): self
