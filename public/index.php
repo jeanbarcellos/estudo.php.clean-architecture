@@ -1,6 +1,7 @@
 <?php
 
 use App\Adapters\Database\UserRepository;
+use App\Domain\Events\UserCreatedEvent;
 use App\UseCases\UserCreateInputBoundary;
 use App\UseCases\UserCreateUseCase;
 
@@ -15,3 +16,7 @@ dump($inputData);
 $outputData = $userCase->handle($inputData);
 
 dump($outputData);
+
+$event = new UserCreatedEvent($outputData['id'], $outputData['name'], $outputData['email']);
+
+dump($event);
