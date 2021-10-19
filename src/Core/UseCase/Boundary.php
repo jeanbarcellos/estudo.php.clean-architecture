@@ -3,6 +3,7 @@
 namespace Core\UseCase;
 
 use ArrayAccess;
+use ReflectionClass;
 use RuntimeException;
 
 abstract class Boundary implements ArrayAccess
@@ -68,5 +69,28 @@ abstract class Boundary implements ArrayAccess
     public function offsetUnset($offset)
     {
         throw new RuntimeException('Action not allowed!');
+    }
+
+    public static function create(array $data): self
+    {
+        $reflectionClass = new ReflectionClass(static::class);
+
+        $args = [];
+
+        foreach ($reflectionClass->getConstructor()->getParameters() as $parameter) {
+            $value = null;
+
+            if ($parameter->isOptional()) {
+                $value = $parameter->getDefaultValue();
+            }
+
+            if (array_key_exists($parameter->getName(), $data)) {
+                $value = $data[$parameter->getName()];
+            }
+
+            $args[$parameter->getName()] = $value;
+        }
+
+        return $reflectionClass->newInstanceArgs($args);
     }
 }
