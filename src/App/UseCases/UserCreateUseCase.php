@@ -22,7 +22,7 @@ class UserCreateUseCase extends UseCase
 
     public function handle(InputData $inputData): OutputData
     {
-        $inputData->validate();
+        $this->validate($inputData);
 
         $user = new User($inputData->getValue('name'), $inputData->getValue('email'));
 
@@ -34,5 +34,10 @@ class UserCreateUseCase extends UseCase
             'email' => $user->getEmail(),
             'createdAt' => $user->getCreatedAt(),
         ]);
+    }
+
+    private function validate(InputData $inputData): void
+    {
+        // ...
     }
 }
