@@ -3,9 +3,10 @@
 namespace Core\UseCase;
 
 use ArrayAccess;
+use Core\Interfaces\Arrayable;
 use RuntimeException;
 
-abstract class IOData implements ArrayAccess
+abstract class IOData implements ArrayAccess, Arrayable
 {
     private $data;
 
@@ -37,6 +38,11 @@ abstract class IOData implements ArrayAccess
     public function count(): int
     {
         return count($this->data);
+    }
+
+    public function toArray(): array
+    {
+        return $this->getData();
     }
 
     public function __get(string $name)
