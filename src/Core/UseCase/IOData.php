@@ -2,11 +2,12 @@
 
 namespace Core\UseCase;
 
+use ArrayAccess;
 use RuntimeException;
 
-abstract class IOData
+abstract class IOData implements ArrayAccess
 {
-    private array $data;
+    private $data;
 
     public function __construct(array $data = [])
     {
@@ -45,6 +46,26 @@ abstract class IOData
         }
 
         return $this->getValue($name);
+    }
+
+    public function offsetExists($offset): bool
+    {
+        return $this->hasValue($offset);
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->getValue($offset);
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        throw new RuntimeException('Action not allowed!');
+    }
+
+    public function offsetUnset($offset)
+    {
+        throw new RuntimeException('Action not allowed!');
     }
 
     public static function create(array $data = []): self
