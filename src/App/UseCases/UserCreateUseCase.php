@@ -4,8 +4,8 @@ namespace App\UseCases;
 
 use App\Domain\Entities\User;
 use App\Domain\Repositories\UserRepositoryInterface;
-use Core\UseCase\InputData;
-use Core\UseCase\OutputData;
+use App\UseCases\UserCreateInputBoundary;
+use App\UseCases\UserCreateOutputBoundary;
 use Core\UseCase\UseCase;
 
 class UserCreateUseCase extends UseCase
@@ -20,15 +20,23 @@ class UserCreateUseCase extends UseCase
         $this->repository = $repository;
     }
 
-    public function handle(InputData $inputData): OutputData
+    public function handle(UserCreateInputBoundary $inputData): UserCreateOutputBoundary
     {
+        // Faz validação
         $this->validate($inputData);
 
-        $user = new User($inputData->getValue('name'), $inputData->getValue('email'));
+        // TO-DO ... fazer outras verificações
 
+        // Criar o  usuário
+        $user = new User($inputData['name'], $inputData['email']);
+
+        // Persistir no repository
         $this->repository->insert($user);
 
-        return new OutputData([
+        // Despachar algum evento... se necessário, ou fazer alguma ação
+
+        // Monta o Output
+        return UserCreateOutputBoundary::create([
             'id' => $user->getId(),
             'name' => $user->getName(),
             'email' => $user->getEmail(),
@@ -36,7 +44,7 @@ class UserCreateUseCase extends UseCase
         ]);
     }
 
-    private function validate(InputData $inputData): void
+    private function validate(UserCreateInputBoundary $inputData): void
     {
         // ...
     }
