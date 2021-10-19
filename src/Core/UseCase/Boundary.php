@@ -11,32 +11,11 @@ abstract class Boundary implements ArrayAccess, Arrayable
 {
     private const GETTER_PREFIX = 'get';
 
-    protected function hasProperty(string $propertyName): bool
-    {
-        return property_exists($this, $propertyName);
-    }
-
-    protected function getProperty($property)
-    {
-        return $this->{$property};
-    }
-
-    protected function setProperty($property, $value): self
-    {
-        if ($this->hasProperty($property)) {
-            $this->{$property} = $value;
-        }
-
-        return $this;
-    }
-
     public function __call($name, $arguments)
     {
         $propertyName = lcfirst(substr($name, strlen(self::GETTER_PREFIX)));
 
-        if ($this->hasProperty($propertyName)
-            && substr($name, 0, strlen(self::GETTER_PREFIX)) === self::GETTER_PREFIX
-        ) {
+        if ($this->hasProperty($propertyName) && substr($name, 0, strlen(self::GETTER_PREFIX)) === self::GETTER_PREFIX) {
             return $this->getProperty($propertyName);
         }
 
@@ -50,6 +29,16 @@ abstract class Boundary implements ArrayAccess, Arrayable
         }
 
         return $this->getProperty($name);
+    }
+
+    public function getData(): array
+    {
+        return $this->toArray();
+    }
+
+    public function getValue(string $key)
+    {
+        return $this->getProperty($key);
     }
 
     public function offsetExists($offset): bool
@@ -75,6 +64,25 @@ abstract class Boundary implements ArrayAccess, Arrayable
     public function toArray(): array
     {
         return get_object_vars($this);
+    }
+
+    protected function hasProperty(string $propertyName): bool
+    {
+        return property_exists($this, $propertyName);
+    }
+
+    protected function getProperty($property)
+    {
+        return $this->{$property};
+    }
+
+    protected function setProperty($property, $value): self
+    {
+        if ($this->hasProperty($property)) {
+            $this->{$property} = $value;
+        }
+
+        return $this;
     }
 
     public static function create(array $data): self
