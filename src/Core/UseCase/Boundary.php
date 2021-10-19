@@ -39,4 +39,13 @@ abstract class Boundary
 
         throw new RuntimeException("Call to undefined method " . static::class . "::" . $name . ".");
     }
+
+    public function __get(string $name)
+    {
+        if (!$this->hasProperty($name)) {
+            throw new RuntimeException(sprintf("Undefined property: '%s'", $name));
+        }
+
+        return $this->getProperty($name);
+    }
 }
