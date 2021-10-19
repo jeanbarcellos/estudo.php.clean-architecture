@@ -2,9 +2,10 @@
 
 namespace Core\UseCase;
 
+use ArrayAccess;
 use RuntimeException;
 
-abstract class Boundary
+abstract class Boundary implements ArrayAccess
 {
     private const GETTER_PREFIX = 'get';
 
@@ -47,5 +48,25 @@ abstract class Boundary
         }
 
         return $this->getProperty($name);
+    }
+
+    public function offsetExists($offset): bool
+    {
+        return $this->hasProperty($offset);
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->getProperty($offset);
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        throw new RuntimeException('Action not allowed!');
+    }
+
+    public function offsetUnset($offset)
+    {
+        throw new RuntimeException('Action not allowed!');
     }
 }
