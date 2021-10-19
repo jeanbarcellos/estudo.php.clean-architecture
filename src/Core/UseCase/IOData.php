@@ -33,6 +33,11 @@ abstract class IOData
         return array_key_exists($key, $this->data);
     }
 
+    public function count(): int
+    {
+        return count($this->data);
+    }
+
     public function __get(string $name)
     {
         if (!$this->exists($name)) {
