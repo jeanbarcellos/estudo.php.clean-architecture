@@ -30,7 +30,7 @@ abstract class Boundary implements ArrayAccess, Arrayable
         return $this->getProperty($name);
     }
 
-    public function getData(): array
+    public function getValues(): array
     {
         return $this->toArray();
     }

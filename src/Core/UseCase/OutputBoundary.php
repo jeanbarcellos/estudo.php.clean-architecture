@@ -9,7 +9,7 @@ abstract class OutputBoundary extends Boundary
     protected $validationErrors = [];
 
     // criar `public static create(...)` como construtor
-    private function __construct()
+    protected function __construct()
     {}
 
     public function getValidationErrors()
