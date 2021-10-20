@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\UseCase;
+namespace Core\Objects;
 
 use ArrayAccess;
 use Core\Interfaces\Arrayable;
@@ -15,7 +15,7 @@ abstract class IOData implements ArrayAccess, Arrayable
         $this->data = $data;
     }
 
-    public function getData(): array
+    public function getValues(): array
     {
         return $this->data;
     }
@@ -42,7 +42,7 @@ abstract class IOData implements ArrayAccess, Arrayable
 
     public function toArray(): array
     {
-        return $this->getData();
+        return $this->getValues();
     }
 
     public function __get(string $name)
