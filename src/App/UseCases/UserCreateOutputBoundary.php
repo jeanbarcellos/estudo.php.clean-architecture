@@ -2,21 +2,22 @@
 
 namespace App\UseCases;
 
-use Core\UseCase\InputBoundary;
+use Core\UseCase\OutputBoundary;
 use DateTimeInterface;
 
-class UserCreateOutputBoundary extends InputBoundary
+class UserCreateOutputBoundary extends OutputBoundary
 {
     protected $id;
     protected $name;
     protected $email;
     protected $createdAt;
 
-    public function __construct(string $id, string $name, string $email, DateTimeInterface $createdAt)
+    public static function create(string $id, string $name, string $email, DateTimeInterface $createdAt): self
     {
-        $this->id = $id;
-        $this->name = $name;
-        $this->email = $email;
-        $this->createdAt = $createdAt;
+        $output = new static();
+        $output->id = $id;
+        $output->name = $name;
+        $output->email = $email;
+        $output->createdAt = $createdAt;
     }
 }

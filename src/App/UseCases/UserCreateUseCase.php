@@ -6,22 +6,33 @@ use App\Domain\Entities\User;
 use App\Domain\Repositories\UserRepositoryInterface;
 use App\UseCases\UserCreateInputBoundary;
 use App\UseCases\UserCreateOutputBoundary;
+use App\UseCases\UserCreateValidator;
 use Core\UseCase\UseCase;
 
-class UserCreateUseCase extends UseCase
+class UserCreateUseCase
 {
     /**
      * @var \App\Domain\Repositories\UserRepositoryInterface
      */
     private $repository;
 
-    public function __construct(UserRepositoryInterface $repository)
+    /**
+     * @var \App\UseCases\UserCreateValidator
+     */
+    private $validator;
+
+    public function __construct(UserRepositoryInterface $repository, UserCreateValidator $validator)
     {
         $this->repository = $repository;
+        $this->validator = $validator;
     }
 
     public function handle(UserCreateInputBoundary $inputData): UserCreateOutputBoundary
     {
+        if (!$this->validator->isValid()) {
+            return UserCreateOutputBoundary::createFromFailure($this->validator->getErrors());
+        }
+
         // Faz validação
         $this->validate($inputData);
 
@@ -36,7 +47,7 @@ class UserCreateUseCase extends UseCase
         // Despachar algum evento... se necessário, ou fazer alguma ação
 
         // Monta o Output
-        return UserCreateOutputBoundary::create([
+        return UserCreateOutputBoundary::createFromSuccess([
             'id' => $user->getId(),
             'name' => $user->getName(),
             'email' => $user->getEmail(),
