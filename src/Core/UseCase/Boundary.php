@@ -4,7 +4,6 @@ namespace Core\UseCase;
 
 use ArrayAccess;
 use Core\Interfaces\Arrayable;
-use Core\Utils\ObjectUtil;
 use RuntimeException;
 
 abstract class Boundary implements ArrayAccess, Arrayable
@@ -66,27 +65,27 @@ abstract class Boundary implements ArrayAccess, Arrayable
         return get_object_vars($this);
     }
 
+    protected function getProperties(): array
+    {
+        return array_keys(get_object_vars($this));
+    }
+
     protected function hasProperty(string $propertyName): bool
     {
         return property_exists($this, $propertyName);
     }
 
-    protected function getProperty($property)
+    protected function getProperty(string $propertyName)
     {
-        return $this->{$property};
+        return $this->{$propertyName};
     }
 
-    protected function setProperty($property, $value): self
+    protected function setProperty(string $propertyName, $value): self
     {
-        if ($this->hasProperty($property)) {
-            $this->{$property} = $value;
+        if ($this->hasProperty($propertyName)) {
+            $this->{$propertyName} = $value;
         }
 
         return $this;
-    }
-
-    public static function create(array $data): self
-    {
-        return ObjectUtil::createFromArray(static::class, $data);
     }
 }

@@ -9,6 +9,5 @@ use Core\UseCase\OutputBoundaryInterface;
 
 abstract class UseCase
 {
-    // abstract public function handle(InputBoundary $inputData): OutputBoundary;
-    // abstract public function handle(InputBoundaryInterface $inputData): OutputBoundaryInterface;
+
 }
