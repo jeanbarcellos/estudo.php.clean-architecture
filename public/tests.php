@@ -1,6 +1,6 @@
 <?php
 
-use App\Adapters\Http\Controllers\UserController;
+use App\Adapters\Http\Controllers\PostController;
 use App\Domain\Events\UserCreatedEvent;
 use App\UseCases\UserCreateInputBoundary;
 use App\UseCases\UserCreateUseCase;
@@ -12,7 +12,7 @@ $container = Container::getInstance();
 $dependencyResolver = $container->get(DependencyResolver::class);
 dump($dependencyResolver);
 
-$resolved = $dependencyResolver->resolveClassMethodParameters(UserController::class, 'test');
+$resolved = $dependencyResolver->resolveClassMethodParameters(PostController::class, 'test');
 dump($resolved);
 exit;
 
