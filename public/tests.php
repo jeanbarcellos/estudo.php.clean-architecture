@@ -1,11 +1,20 @@
 <?php
 
+use App\Adapters\Http\Controllers\UserController;
 use App\Domain\Events\UserCreatedEvent;
 use App\UseCases\UserCreateInputBoundary;
 use App\UseCases\UserCreateUseCase;
-use Framework\Container;
+use Framework\DI\Container;
+use Framework\DI\DependencyResolver;
 
 $container = Container::getInstance();
+
+$dependencyResolver = $container->get(DependencyResolver::class);
+dump($dependencyResolver);
+
+$resolved = $dependencyResolver->resolveClassMethodParameters(UserController::class, 'test');
+dump($resolved);
+exit;
 
 // $container->instance('config', ['app' => ['name' => 'teste']]);
 
