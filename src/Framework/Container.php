@@ -9,11 +9,22 @@ use RuntimeException;
 
 class Container
 {
+    protected static $instance;
+
     private $bindings = [];
 
     private $instances = [];
 
     private $singleton = [];
+
+    public static function getInstance(): Container
+    {
+        if (is_null(static::$instance)) {
+            static::$instance = new static;
+        }
+
+        return static::$instance;
+    }
 
     public function set(string $id, $operation = null, $singleton = false): void
     {
