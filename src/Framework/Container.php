@@ -17,6 +17,12 @@ class Container
 
     private $singleton = [];
 
+    public function __construct()
+    {
+        static::$instance = $this;
+        $this->instances[static::class] = $this;
+    }
+
     public static function getInstance(): Container
     {
         if (is_null(static::$instance)) {
@@ -175,4 +181,8 @@ class Container
         throw new RuntimeException("Could not resolve parameter [$parameter] in class {$parameter->getDeclaringClass()->getName()}");
     }
 
+    public static function staticGet(string $id)
+    {
+        return self::getInstance()->get($id);
+    }
 }
