@@ -1,19 +1,13 @@
 <?php
 
-use App\Adapters\Database\UserRepository;
-use App\UseCases\UserCreateInputBoundary;
-use App\UseCases\UserCreateUseCase;
-use App\UseCases\UserCreateValidator;
+use App\Adapters\Http\Controllers\UserController;
+use Framework\Container;
 
 require __DIR__ . '/../bootstrap.php';
 // require 'tests.php';
 
-$userCase = new UserCreateUseCase(new UserRepository(), new UserCreateValidator());
+$container = Container::getInstance();
 
-$inputData = new UserCreateInputBoundary('Jean Barcellos', 'jeanbarcellos@hotmail.com');
+$controller = $container->get(UserController::class);
 
-dump($inputData);
-
-$outputData = $userCase->handle($inputData);
-
-dump($outputData->getValues());
+$response = $controller->insert();

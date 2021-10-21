@@ -2,6 +2,21 @@
 
 use App\Domain\Events\UserCreatedEvent;
 use App\UseCases\UserCreateInputBoundary;
+use App\UseCases\UserCreateUseCase;
+use Framework\Container;
+
+$container = Container::getInstance();
+
+// $container->instance('config', ['app' => ['name' => 'teste']]);
+
+// dump($container->get(UserCreateUseCase::class));
+dump($container->get(UserCreateUseCase::class));
+dump($container->get(UserCreateUseCase::class));
+// dump($container->get('config'));
+
+exit;
+
+exit;
 
 $input = new UserCreateInputBoundary('Jean Barcellos', 'jeanbarcellos@hotmail.com');
 dump($input);
