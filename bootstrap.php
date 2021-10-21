@@ -2,7 +2,7 @@
 
 use App\Adapters\Database\UserRepository;
 use App\Domain\Repositories\UserRepositoryInterface;
-use Framework\Container;
+use Framework\DI\Container;
 
 require __DIR__ . '/vendor/autoload.php';
 

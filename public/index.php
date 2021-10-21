@@ -1,7 +1,7 @@
 <?php
 
 use App\Adapters\Http\Controllers\UserController;
-use Framework\Container;
+use Framework\DI\Container;
 
 require __DIR__ . '/../bootstrap.php';
 // require 'tests.php';
