@@ -8,10 +8,14 @@
   ],
   "autoload": {
     "psr-4": {
-      "": "src"
+      "": "src",
+      "Tests\\": "tests/"
     }
   },
   "require-dev": {
     "symfony/var-dumper": "^5.3"
+  },
+  "require": {
+    "phpunit/phpunit": "^9.5"
   }
 }
