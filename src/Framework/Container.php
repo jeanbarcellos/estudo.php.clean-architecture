@@ -61,6 +61,11 @@ class Container
         return (isset($this->singleton[$id]) && $this->singleton[$id] === true);
     }
 
+    public function instance(string $id, $operation)
+    {
+        $this->instances[$id] = $operation;
+    }
+
     public function has(string $id): bool
     {
         return isset($this->bindings[$id]) || isset($this->instances[$id]);
