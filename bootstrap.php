@@ -1,15 +1,13 @@
 <?php
 
-use App\Adapters\Database\UserRepository;
-use App\Domain\Repositories\UserRepositoryInterface;
-use Framework\DI\Container;
-use Framework\DependencyResolver;
-
 require __DIR__ . '/vendor/autoload.php';
 
-# Binds do container
-$container = new Container();
+$container = new Framework\DI\Container();
 
-$container->singleton(DependencyResolver::class);
+$basePath = __DIR__ . DIRECTORY_SEPARATOR;
 
-$container->singleton(UserRepositoryInterface::class, UserRepository::class);
+$container->instance('path', $basePath);
+
+$containerConfig = require join(DIRECTORY_SEPARATOR, [rtrim($basePath, '\/'), 'configs', 'container.php']);
+
+$containerConfig($container);
