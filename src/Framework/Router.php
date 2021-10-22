@@ -3,6 +3,7 @@
 namespace Framework;
 
 use Closure;
+use Framework\DI\Container;
 use Framework\DI\DependencyResolver;
 
 class Router
@@ -16,12 +17,18 @@ class Router
     private $params;
 
     /**
+     * @var \Framework\DI\Container
+     */
+    private $container;
+
+    /**
      * @var \Framework\DI\DependencyResolver
      */
     private $dependencyResolver;
 
-    public function __construct(DependencyResolver $dependencyResolver)
+    public function __construct(Container $container, DependencyResolver $dependencyResolver)
     {
+        $this->container = $container;
         $this->dependencyResolver = $dependencyResolver;
     }
 
@@ -95,14 +102,23 @@ class Router
         }
 
         if (is_string($action)) {
-            return $this->dependencyResolver->resolveClassMethodParameters($action, 'index');
+            return $this->resolveController($action, 'index');
         }
 
         if (is_array($action)) {
-            return $this->dependencyResolver->resolveClassMethodParameters($action[0], $action[1]);
+            return $this->resolveController($action[0], $action[1]);
         }
 
         return $action;
+    }
+
+    private function resolveController(string $controllerName, string $actionName)
+    {
+        $controller = $this->container->get($controllerName);
+
+        $parameters = $this->dependencyResolver->resolveClassMethodParameters($controllerName, $actionName, $this->getParams());
+
+        return call_user_func_array([$controller, $actionName], $parameters);
     }
 
     private function checkUrl(string $route, string $path)
