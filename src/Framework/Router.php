@@ -14,7 +14,7 @@ class Router
 
     private $uri;
 
-    private $params;
+    private $params = [];
 
     /**
      * @var \Framework\DI\Container
