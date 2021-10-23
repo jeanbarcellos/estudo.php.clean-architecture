@@ -5,10 +5,12 @@ namespace Core\Presentation;
 use Core\Interfaces\Arrayable;
 use Core\UseCase\OutputBoundary;
 use DateTime;
+use Framework\Http\JsonResponse;
+use Framework\Http\ResponseInterface;
 
 class Presenter
 {
-    public function handle(OutputBoundary $output): array
+    public function handle(OutputBoundary $output): ResponseInterface
     {
         if (empty($output->getValidationErrors())) {
             return $this->prepareSuccess($output);
@@ -17,7 +19,7 @@ class Presenter
         return $this->prepareFailure($output);
     }
 
-    private function prepareSuccess(OutputBoundary $output): array
+    private function prepareSuccess(OutputBoundary $output): ResponseInterface
     {
         $data = $output->toArray();
 
@@ -25,10 +27,7 @@ class Presenter
 
         unset($data['validationErrors']);
 
-        return [
-            'success' => true,
-            'data' => $this->recursive($data),
-        ];
+        return new JsonResponse($this->recursive($data), 200);
     }
 
     private function recursive(array $data): array
@@ -61,11 +60,11 @@ class Presenter
         return $value;
     }
 
-    private function prepareFailure(OutputBoundary $output): array
+    private function prepareFailure(OutputBoundary $output): ResponseInterface
     {
-        return [
-            'success' => false,
+        return new JsonResponse([
+            'message' => 'Error',
             'errors' => $output->getValidationErrors(),
-        ];
+        ], 400);
     }
 }
