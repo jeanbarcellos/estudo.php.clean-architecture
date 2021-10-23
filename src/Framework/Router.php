@@ -7,9 +7,9 @@ use Core\Interfaces\Arrayable;
 use Framework\DI\Container;
 use Framework\DI\DependencyResolver;
 use Framework\Http\Exceptions\NotFoundHttpException;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Framework\Http\JsonResponse;
+use Framework\Http\Request;
+use Framework\Http\Response;
 
 class Router
 {
