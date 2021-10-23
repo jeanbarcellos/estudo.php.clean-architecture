@@ -9,7 +9,9 @@ use Framework\DI\DependencyResolver;
 use Framework\Http\Exceptions\NotFoundHttpException;
 use Framework\Http\JsonResponse;
 use Framework\Http\Request;
+use Framework\Http\RequestInterface;
 use Framework\Http\Response;
+use Framework\Http\ResponseInterface;
 
 class Router
 {
@@ -19,7 +21,7 @@ class Router
 
     private $uri;
 
-    private $params = [];
+    private $parameters = [];
 
     /**
      * @var \Framework\DI\Container
@@ -73,13 +75,14 @@ class Router
         return $this;
     }
 
-    public function getParams()
+    public function getParameters(): array
     {
-        return $this->params;
+        return $this->parameters;
     }
 
-    public function handler(Request $request)
+    public function handle(RequestInterface $request)
     {
+        $this->container->instance(RequestInterface::class, $request);
         $this->container->instance(Request::class, $request);
 
         $this->method = $request->getMethod();
@@ -94,7 +97,7 @@ class Router
         }
 
         foreach ($this->routes[$this->method] as $route => $action) {
-            if ($this->checkUrl($route, $this->uri)) {
+            if ($this->matchRoute($route, $this->uri)) {
                 return $this->prepareResponse($request, $this->resolveAction($action));
             }
         }
@@ -123,12 +126,12 @@ class Router
     {
         $controller = $this->container->get($controllerName);
 
-        $parameters = $this->dependencyResolver->resolveClassMethodParameters($controllerName, $actionName, $this->getParams());
+        $parameters = $this->dependencyResolver->resolveClassMethodParameters($controllerName, $actionName, $this->getParameters());
 
         return call_user_func_array([$controller, $actionName], $parameters);
     }
 
-    private function prepareResponse(Request $request, $response)
+    private function prepareResponse(Request $request, $response): ResponseInterface
     {
         if (is_array($response) || $response instanceof Arrayable || $response instanceof JsonSerializable) {
             $response = new JsonResponse($response);
@@ -143,14 +146,14 @@ class Router
         return $response->prepare($request);
     }
 
-    private function checkUrl(string $route, string $path)
+    private function matchRoute(string $route, string $path)
     {
         $regex = self::extractRegex($route);
 
         $matched = (bool) preg_match($regex, rawurldecode($path));
 
         if ($matched) {
-            $this->params = self::extractValuesFromVariables($path, $regex);
+            $this->parameters = self::extractValuesFromVariables($path, $regex);
         }
 
         return $matched;

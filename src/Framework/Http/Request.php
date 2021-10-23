@@ -2,11 +2,12 @@
 
 namespace Framework\Http;
 
+use Framework\Http\RequestInterface;
 use Framework\Utils\ArrayUtil;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
-class Request extends SymfonyRequest
+class Request extends SymfonyRequest implements RequestInterface
 {
     public static function capture(): Request
     {

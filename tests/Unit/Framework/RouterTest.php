@@ -21,7 +21,7 @@ class RouterTest extends TestCase
         $expected = false;
 
         // Action
-        $actual = $router->handler();
+        $actual = $router->handle();
 
         // Assert
         $this->assertEquals($expected, $actual);
@@ -40,7 +40,7 @@ class RouterTest extends TestCase
         });
 
         // executamos o método que encontra a rota atual
-        $result = $router->handler();
+        $result = $router->handle();
 
         // executo a ação da rota encontrada e pego o valor,
         // note que estou executando o método que
@@ -63,7 +63,7 @@ class RouterTest extends TestCase
             return true;
         });
 
-        $result = $router->handler();
+        $result = $router->handle();
 
         $actual = $result;
         $expected = false;

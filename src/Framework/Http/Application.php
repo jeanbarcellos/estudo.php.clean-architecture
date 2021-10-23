@@ -2,9 +2,10 @@
 
 namespace Framework\Http;
 
+use Closure;
 use Framework\DI\Container;
-use Framework\Routing\Router;
 use Framework\Http\Request;
+use Framework\Routing\Router;
 
 class Application
 {
@@ -26,12 +27,12 @@ class Application
 
         $request = Request::capture();
 
-        $response = $router->handler($request);
+        $response = $router->handle($request);
 
         $response->send();
     }
 
-    private static function getConfig(string $config)
+    private static function getConfig(string $config): Closure
     {
         $basePath = static::$container->get('path');
 
