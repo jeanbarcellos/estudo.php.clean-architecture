@@ -11,6 +11,8 @@ class HomeController
 
     public function show(int $id)
     {
-        return 'Olá mundo ID: ' . $id;
+        return [
+            'teste' => 'Olá mundo ID: ' . $id,
+        ];
     }
 }
