@@ -33,9 +33,6 @@ class UserCreateUseCase
             return UserCreateOutputBoundary::createFromFailure($this->validator->getErrors());
         }
 
-        // Faz validação
-        $this->validate($inputData);
-
         // TO-DO ... fazer outras verificações
 
         // Criar o  usuário
@@ -53,10 +50,5 @@ class UserCreateUseCase
             'email' => $user->getEmail(),
             'createdAt' => $user->getCreatedAt(),
         ]);
-    }
-
-    private function validate(UserCreateInputBoundary $inputData): void
-    {
-        // ...
     }
 }
