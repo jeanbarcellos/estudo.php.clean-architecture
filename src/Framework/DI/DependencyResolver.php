@@ -3,6 +3,7 @@
 namespace Framework\DI;
 
 use Framework\DI\Container;
+use Framework\Utils\ArrayUtil;
 use ReflectionMethod;
 use ReflectionParameter;
 use RuntimeException;
@@ -42,7 +43,7 @@ class DependencyResolver
 
     private function resolveParameter(ReflectionParameter $parameter, array $values = [])
     {
-        $value = array_key_exists($parameter->getName(), $values) ? $values[$parameter->getName()] : null;
+        $value = ArrayUtil::get($values, $parameter->getName());
 
         if (!is_null($parameter->getClass())) {
             return $this->resolveParameterClass($parameter, $value);

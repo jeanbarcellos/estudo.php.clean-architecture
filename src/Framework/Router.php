@@ -6,6 +6,7 @@ use Closure;
 use Core\Interfaces\Arrayable;
 use Framework\DI\Container;
 use Framework\DI\DependencyResolver;
+use Framework\Http\Exceptions\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -98,7 +99,7 @@ class Router
             }
         }
 
-        return false;
+        throw new NotFoundHttpException('Route not found.');
     }
 
     private function resolveAction($action)
@@ -131,6 +132,10 @@ class Router
     {
         if (is_array($response) || $response instanceof Arrayable || $response instanceof JsonSerializable) {
             $response = new JsonResponse($response);
+        } elseif ($response instanceof JsonResponse) {
+
+        } elseif ($response instanceof Response) {
+
         } else {
             $response = new Response($response);
         }
