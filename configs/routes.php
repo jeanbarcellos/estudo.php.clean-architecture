@@ -1,17 +1,14 @@
 <?php
 
-use App\Adapters\Http\Controllers\HomeController;
-use App\Adapters\Http\Controllers\UserController;
-use Framework\Router;
+use App\Adapters\Http\Controllers;
+use Framework\Routing\Router;
 
 return function (Router $router) {
-    $router->get('/', [HomeController::class, 'index']);
-
-    $router->get('/user', [UserController::class, 'insert']);
-
-    $router->get('/test/{id}', [HomeController::class, 'show']);
-
-    $router->get('/cursos/{cursoId}/aulas/{aulaId}/eita/{id}', function () {
-        return 'Olá mundo 3';
+    $router->get('/', function () {
+        return 'Olá mundo';
     });
+
+    $router->get('/users', [Controllers\UserController::class, 'index']);
+    $router->get('/users/{id}', [Controllers\HomeController::class, 'show']);
+    $router->post('/users', [Controllers\UserController::class, 'insert']);
 };

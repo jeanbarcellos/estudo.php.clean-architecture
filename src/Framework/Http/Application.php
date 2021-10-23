@@ -3,7 +3,7 @@
 namespace Framework\Http;
 
 use Framework\DI\Container;
-use Framework\Router;
+use Framework\Routing\Router;
 use Framework\Http\Request;
 
 class Application
