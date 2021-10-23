@@ -4,6 +4,8 @@ namespace App\Adapters\Http\Controllers;
 
 use App\UseCases\UserCreateInputBoundary;
 use App\UseCases\UserCreateUseCase;
+use Core\Presentation\Presenter;
+use Framework\Http\RequestInterface;
 
 class UserController
 {
@@ -12,19 +14,39 @@ class UserController
      */
     private $useCase;
 
-    public function __construct(UserCreateUseCase $useCase)
-    {
+    /**
+     * @var \Core\Presentation\Presenter
+     */
+    private $presenter;
+
+    public function __construct(
+        UserCreateUseCase $useCase,
+        Presenter $presenter
+    ) {
         $this->useCase = $useCase;
+        $this->presenter = $presenter;
     }
 
-    public function insert()
+    public function index(RequestInterface $request)
     {
-        $inputData = new UserCreateInputBoundary('Jean Barcellos', 'jeanbarcellos@hotmail.com');
-
-        dump($inputData);
+        $inputData = UserCreateInputBoundary::create($request->body());
 
         $outputData = $this->useCase->handle($inputData);
 
-        dump($outputData);
+        return $this->presenter->handle($outputData);
+    }
+
+    public function show(int $id)
+    {
+        dump($id);
+    }
+
+    public function insert(RequestInterface $request)
+    {
+        $inputData = UserCreateInputBoundary::create($request->body());
+
+        $outputData = $this->useCase->handle($inputData);
+
+        return $this->presenter->handle($outputData);
     }
 }
