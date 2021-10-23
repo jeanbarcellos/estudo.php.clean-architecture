@@ -86,7 +86,7 @@ class Router
         $this->container->instance(Request::class, $request);
 
         $this->method = $request->getMethod();
-        $this->uri = '/' . ltrim(trim($request->getPathInfo()), '/');
+        $this->uri = '/' . ltrim(trim($request->getPath()), '/');
 
         if (empty($this->routes[$this->method])) {
             return false;

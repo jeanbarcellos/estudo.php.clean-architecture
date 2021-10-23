@@ -18,7 +18,7 @@ class Request extends SymfonyRequest implements RequestInterface
         return $request;
     }
 
-    public function getRequestReal(): ParameterBag
+    private function getRequestReal(): ParameterBag
     {
         if (0 === strpos($this->headers->get('Content-Type'), 'application/json')) {
             $jsonDecode = (array) json_decode($this->getContent(), true);
@@ -36,5 +36,30 @@ class Request extends SymfonyRequest implements RequestInterface
         }
 
         return ArrayUtil::get($this->request->all(), $key, $default);
+    }
+
+    public function query($key = null, $default = null)
+    {
+        if (is_null($key)) {
+            return $this->query->all();
+        }
+
+        return ArrayUtil::get($this->query->all(), $key, $default);
+    }
+
+    public function file($key = null, $default = null)
+    {
+        if (is_null($key)) {
+            return $this->files->all();
+        }
+
+        return ArrayUtil::get($this->files->all(), $key, $default);
+    }
+
+    public function getPath(): string
+    {
+        $path = trim($this->getPathInfo(), '/');
+
+        return $path === '' ? '/' : $path;
     }
 }
