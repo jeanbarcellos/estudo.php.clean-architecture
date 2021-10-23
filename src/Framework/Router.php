@@ -3,8 +3,12 @@
 namespace Framework;
 
 use Closure;
+use Core\Interfaces\Arrayable;
 use Framework\DI\Container;
 use Framework\DI\DependencyResolver;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class Router
 {
@@ -73,22 +77,24 @@ class Router
         return $this->params;
     }
 
-    public function handler($request)
+    public function handler(Request $request)
     {
-        $this->method = $request[0];
-        $this->uri = '/' . ltrim(trim($request[1]), '/');
+        $this->container->instance(Request::class, $request);
+
+        $this->method = $request->getMethod();
+        $this->uri = '/' . ltrim(trim($request->getPathInfo()), '/');
 
         if (empty($this->routes[$this->method])) {
             return false;
         }
 
         if (isset($this->routes[$this->method][$this->uri])) {
-            return $this->resolveAction($this->routes[$this->method][$this->uri]);
+            return $this->prepareResponse($request, $this->resolveAction($this->routes[$this->method][$this->uri]));
         }
 
         foreach ($this->routes[$this->method] as $route => $action) {
             if ($this->checkUrl($route, $this->uri)) {
-                return $this->resolveAction($action);
+                return $this->prepareResponse($request, $this->resolveAction($action));
             }
         }
 
@@ -119,6 +125,17 @@ class Router
         $parameters = $this->dependencyResolver->resolveClassMethodParameters($controllerName, $actionName, $this->getParams());
 
         return call_user_func_array([$controller, $actionName], $parameters);
+    }
+
+    private function prepareResponse(Request $request, $response)
+    {
+        if (is_array($response) || $response instanceof Arrayable || $response instanceof JsonSerializable) {
+            $response = new JsonResponse($response);
+        } else {
+            $response = new Response($response);
+        }
+
+        return $response->prepare($request);
     }
 
     private function checkUrl(string $route, string $path)

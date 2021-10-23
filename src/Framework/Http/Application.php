@@ -4,6 +4,7 @@ namespace Framework\Http;
 
 use Framework\DI\Container;
 use Framework\Router;
+use Symfony\Component\HttpFoundation\Request;
 
 class Application
 {
@@ -17,20 +18,17 @@ class Application
     {
         self::$container = $container = Container::getInstance();
 
-        // Request
-        $method = $_SERVER['REQUEST_METHOD'];
-        $path = $_SERVER['REQUEST_URI'] ?? '/';
-        $request = [$method, $path];
-
         $router = static::$container->get(Router::class);
 
         $routes = self::getConfig('routes');
 
         $routes($router);
 
-        $result = $router->handler($request);
+        $request = Request::createFromGlobals();
 
-        dump($result);
+        $response = $router->handler($request);
+
+        $response->send();
     }
 
     private static function getConfig(string $config)
