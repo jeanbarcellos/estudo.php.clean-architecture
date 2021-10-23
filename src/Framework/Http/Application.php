@@ -4,7 +4,7 @@ namespace Framework\Http;
 
 use Framework\DI\Container;
 use Framework\Router;
-use Symfony\Component\HttpFoundation\Request;
+use Framework\Http\Request;
 
 class Application
 {
@@ -24,7 +24,7 @@ class Application
 
         $routes($router);
 
-        $request = Request::createFromGlobals();
+        $request = Request::capture();
 
         $response = $router->handler($request);
 
