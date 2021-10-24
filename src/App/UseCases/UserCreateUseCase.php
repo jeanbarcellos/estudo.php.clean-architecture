@@ -3,10 +3,12 @@
 namespace App\UseCases;
 
 use App\Domain\Entities\User;
+use App\Domain\Events\UserCreatedEvent;
 use App\Domain\Repositories\UserRepositoryInterface;
 use App\UseCases\UserCreateInputBoundary;
 use App\UseCases\UserCreateOutputBoundary;
 use App\UseCases\UserCreateValidator;
+use Core\Communication\EventDispatcherInterface;
 use Core\UseCase\UseCase;
 
 class UserCreateUseCase
@@ -21,19 +23,27 @@ class UserCreateUseCase
      */
     private $validator;
 
-    public function __construct(UserRepositoryInterface $repository, UserCreateValidator $validator)
-    {
+    /**
+     * @var \Core\Communication\EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    public function __construct(
+        UserRepositoryInterface $repository,
+        UserCreateValidator $validator,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->repository = $repository;
         $this->validator = $validator;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function handle(UserCreateInputBoundary $inputData): UserCreateOutputBoundary
     {
+        // Validar o InputData
         if (!$this->validator->isValid()) {
             return UserCreateOutputBoundary::createFromFailure($this->validator->getErrors());
         }
-
-        // TO-DO ... fazer outras verificações
 
         // Criar o  usuário
         $user = new User($inputData['name'], $inputData['email']);
@@ -41,14 +51,10 @@ class UserCreateUseCase
         // Persistir no repository
         $this->repository->insert($user);
 
-        // Despachar algum evento... se necessário, ou fazer alguma ação
+        // Despachar evento de usuário criado
+        $this->eventDispatcher->dispatch(UserCreatedEvent::create($user->toArray()));
 
-        // Monta o Output
-        return UserCreateOutputBoundary::createFromSuccess([
-            'id' => $user->getId(),
-            'name' => $user->getName(),
-            'email' => $user->getEmail(),
-            'createdAt' => $user->getCreatedAt(),
-        ]);
+        // Retornar o OutputData
+        return UserCreateOutputBoundary::createFromSuccess($user->toArray());
     }
 }

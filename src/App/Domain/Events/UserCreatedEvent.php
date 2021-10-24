@@ -2,9 +2,9 @@
 
 namespace App\Domain\Events;
 
-use Core\Messages\Event;
+use Core\Domain\DomainEvent;
 
-class UserCreatedEvent extends Event
+class UserCreatedEvent extends DomainEvent
 {
     public $id;
     public $name;
