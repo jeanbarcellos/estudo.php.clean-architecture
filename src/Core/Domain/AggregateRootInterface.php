@@ -2,7 +2,7 @@
 
 namespace Core\Domain;
 
-interface AggregateRoot
+interface AggregateRootInterface
 {
 
 }
