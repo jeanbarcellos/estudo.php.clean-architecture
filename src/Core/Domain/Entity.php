@@ -10,9 +10,9 @@ use ReflectionMethod;
 
 abstract class Entity implements Arrayable
 {
-    private const GETTER_PREFIX = 'get';
-
     use PropertiesTrait;
+
+    private const GETTER_PREFIX = 'get';
 
     protected $id;
 
@@ -23,13 +23,11 @@ abstract class Entity implements Arrayable
 
     public function toArray(): array
     {
-        $output = [];
-
         $properties = $this->getProperties();
 
-        $replection = new ReflectionClass($this);
+        $methods = (new ReflectionClass($this))->getMethods(ReflectionMethod::IS_PUBLIC);
 
-        $methods = $replection->getMethods(ReflectionMethod::IS_PUBLIC);
+        $output = [];
 
         foreach ($methods as $key => $method) {
             $propertyName = ObjectUtil::getPropertyNameFromMethodName($method->getName(), self::GETTER_PREFIX);

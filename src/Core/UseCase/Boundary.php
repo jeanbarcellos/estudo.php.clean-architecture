@@ -4,10 +4,13 @@ namespace Core\UseCase;
 
 use ArrayAccess;
 use Core\Interfaces\Arrayable;
+use Core\Traits\PropertiesTrait;
 use RuntimeException;
 
 abstract class Boundary implements ArrayAccess, Arrayable
 {
+    use PropertiesTrait;
+
     private const GETTER_PREFIX = 'get';
 
     public function __call($name, $arguments)
@@ -63,29 +66,5 @@ abstract class Boundary implements ArrayAccess, Arrayable
     public function toArray(): array
     {
         return get_object_vars($this);
-    }
-
-    protected function getProperties(): array
-    {
-        return array_keys(get_object_vars($this));
-    }
-
-    protected function hasProperty(string $propertyName): bool
-    {
-        return property_exists($this, $propertyName);
-    }
-
-    protected function getProperty(string $propertyName)
-    {
-        return $this->{$propertyName};
-    }
-
-    protected function setProperty(string $propertyName, $value): self
-    {
-        if ($this->hasProperty($propertyName)) {
-            $this->{$propertyName} = $value;
-        }
-
-        return $this;
     }
 }

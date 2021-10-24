@@ -28,4 +28,14 @@ class ObjectUtil
 
         return $reflectionClass->newInstanceArgs($args);
     }
+
+    public static function getPropertyNameFromMethodName(string $name, string $prefix = '')
+    {
+        return lcfirst(substr($name, strlen($prefix)));
+    }
+
+    public static function getMethodNameFromPropertyName(string $name, string $prefix = '')
+    {
+        return $prefix . ucfirst($name);
+    }
 }
