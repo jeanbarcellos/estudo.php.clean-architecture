@@ -1,6 +1,7 @@
 # dependencies
 /node_modules
 /vendor
+build/
 
 # projects IDEs
 /nbproject
