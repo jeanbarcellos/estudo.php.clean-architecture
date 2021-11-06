@@ -12,8 +12,6 @@ abstract class Entity implements Arrayable
 {
     use PropertiesTrait;
 
-    private const GETTER_PREFIX = 'get';
-
     protected $id;
 
     public function getId(): string
@@ -30,7 +28,7 @@ abstract class Entity implements Arrayable
         $output = [];
 
         foreach ($methods as $key => $method) {
-            $propertyName = ObjectUtil::getPropertyNameFromMethodName($method->getName(), self::GETTER_PREFIX);
+            $propertyName = ObjectUtil::getPropertyNameFromGetterMethodName($method->getName());
 
             if (in_array($propertyName, $properties)) {
                 $output[$propertyName] = $this->{$method->getName()}();

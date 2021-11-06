@@ -5,19 +5,18 @@ namespace Core\UseCase;
 use ArrayAccess;
 use Core\Interfaces\Arrayable;
 use Core\Traits\PropertiesTrait;
+use Core\Utils\ObjectUtil;
 use RuntimeException;
 
 abstract class Boundary implements ArrayAccess, Arrayable
 {
     use PropertiesTrait;
 
-    private const GETTER_PREFIX = 'get';
-
     public function __call($name, $arguments)
     {
-        $propertyName = lcfirst(substr($name, strlen(self::GETTER_PREFIX)));
+        $propertyName = ObjectUtil::getPropertyNameFromGetterMethodName($name);
 
-        if ($this->hasProperty($propertyName) && substr($name, 0, strlen(self::GETTER_PREFIX)) === self::GETTER_PREFIX) {
+        if ($this->hasProperty($propertyName) && ObjectUtil::isGetterMethod($name)) {
             return $this->getProperty($propertyName);
         }
 
