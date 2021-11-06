@@ -2,19 +2,20 @@
 
 namespace Tests\Unit\Framework;
 
-use App\UseCases\UserCreateInputBoundary;
+// use App\UseCases\ModelInputBoundary;
 use PHPUnit\Framework\TestCase;
+use Tests\Unit\Core\UseCase\ModelInputBoundary;
 
-class UserCreateInputBoundaryTest extends TestCase
+class ModelInputBoundaryTest extends TestCase
 {
     private $data = [
         'email' => 'jeanbarcellos@hotmail.com',
         'name' => 'Jean Barcellos',
     ];
 
-    private function getInstance(): UserCreateInputBoundary
+    private function getInstance(): ModelInputBoundary
     {
-        return new UserCreateInputBoundary($this->data['name'], $this->data['email']);
+        return new ModelInputBoundary($this->data['name'], $this->data['email']);
     }
 
     /*
@@ -31,10 +32,10 @@ class UserCreateInputBoundaryTest extends TestCase
     public function test_construct_newInstance_instance()
     {
         // Arrange && Act
-        $input = new UserCreateInputBoundary($this->data['name'], $this->data['email']);
+        $input = new ModelInputBoundary($this->data['name'], $this->data['email']);
 
         // Assert
-        $this->assertInstanceOf(UserCreateInputBoundary::class, $input);
+        $this->assertInstanceOf(ModelInputBoundary::class, $input);
         $this->assertEquals($this->data['name'], $input->getName());
         $this->assertEquals($this->data['email'], $input->getEmail());
     }
@@ -72,7 +73,7 @@ class UserCreateInputBoundaryTest extends TestCase
     public function test_create()
     {
         // Arrange
-        $actual = UserCreateInputBoundary::create($this->data);
+        $actual = ModelInputBoundary::create($this->data);
 
         // Act && Assert
         $this->assertEquals($this->data['name'], $actual['name']);
