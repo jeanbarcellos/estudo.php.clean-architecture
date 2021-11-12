@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Framework;
+namespace Tests\Unit\Framework\DI;
 
 use Framework\DI\Container;
 use PHPUnit\Framework\TestCase;
