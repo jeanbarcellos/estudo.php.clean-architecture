@@ -11,19 +11,13 @@ class ArrayUtil
 
     public static function set(array &$array, string $key, $value): array
     {
-        if (is_null($key)) {
-            return $array;
-        }
+        $array[$key] = $value;
 
-        return $array[$key];
+        return $array;
     }
 
     public static function get(array $array, string $key, $default = null)
     {
-        if (is_null($key)) {
-            return $array;
-        }
-
         if (static::exists($array, $key)) {
             return $array[$key];
         }
