@@ -16,7 +16,8 @@
     "symfony/var-dumper": "^5.3"
   },
   "scripts": {
-    "test": "vendor/bin/phpunit"
+    "test": "vendor/bin/phpunit",
+    "test-coverage": "vendor/bin/phpunit --coverage-html tests/build"
   },
   "require": {
     "phpunit/phpunit": "^9.5",
