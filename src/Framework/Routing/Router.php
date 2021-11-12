@@ -39,6 +39,16 @@ class Router
         $this->dependencyResolver = $dependencyResolver;
     }
 
+    public function getRoutes(): array
+    {
+        return $this->routes;
+    }
+
+    public function getParameters(): array
+    {
+        return $this->parameters;
+    }
+
     public function get(string $route, $action): self
     {
         $this->add('GET', $route, $action);
@@ -73,11 +83,6 @@ class Router
     {
         $this->routes[$method][$route] = $action;
         return $this;
-    }
-
-    public function getParameters(): array
-    {
-        return $this->parameters;
     }
 
     public function handle(RequestInterface $request)
