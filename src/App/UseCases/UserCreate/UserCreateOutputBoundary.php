@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UseCases;
+namespace App\UseCases\UserCreate;
 
 use Core\UseCase\OutputBoundary;
 use DateTimeInterface;

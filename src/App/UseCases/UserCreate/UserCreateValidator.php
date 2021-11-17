@@ -1,8 +1,8 @@
 <?php
 
-namespace App\UseCases;
+namespace App\UseCases\UserCreate;
 
-use App\UseCases\UserCreateInputBoundary;
+use App\UseCases\UserCreate\UserCreateInputBoundary;
 use Core\Validation\Validator;
 
 class UserCreateValidator extends Validator

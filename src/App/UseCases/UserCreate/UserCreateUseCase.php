@@ -1,13 +1,13 @@
 <?php
 
-namespace App\UseCases;
+namespace App\UseCases\UserCreate;
 
 use App\Domain\Entities\User;
 use App\Domain\Events\UserCreatedEvent;
 use App\Domain\Repositories\UserRepositoryInterface;
-use App\UseCases\UserCreateInputBoundary;
-use App\UseCases\UserCreateOutputBoundary;
-use App\UseCases\UserCreateValidator;
+use App\UseCases\UserCreate\UserCreateInputBoundary;
+use App\UseCases\UserCreate\UserCreateOutputBoundary;
+use App\UseCases\UserCreate\UserCreateValidator;
 use Core\Communication\EventDispatcherInterface;
 use Core\UseCase\UseCase;
 
@@ -19,7 +19,7 @@ class UserCreateUseCase
     private $repository;
 
     /**
-     * @var \App\UseCases\UserCreateValidator
+     * @var \App\UseCases\UserCreate\UserCreateValidator
      */
     private $validator;
 
