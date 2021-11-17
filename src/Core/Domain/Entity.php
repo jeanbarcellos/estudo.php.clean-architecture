@@ -28,6 +28,10 @@ abstract class Entity implements Arrayable
         $output = [];
 
         foreach ($methods as $key => $method) {
+            if (!ObjectUtil::isGetterMethod($method->getName())) {
+                continue;
+            }
+
             $propertyName = ObjectUtil::getPropertyNameFromGetterMethodName($method->getName());
 
             if (in_array($propertyName, $properties)) {
