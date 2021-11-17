@@ -1,6 +1,5 @@
 <?php
 
-require __DIR__ . '/../bootstrap.php';
-// require 'tests.php';
+require join(DIRECTORY_SEPARATOR, ['..', 'bootstrap.php']);
 
 Framework\Http\Application::run();
