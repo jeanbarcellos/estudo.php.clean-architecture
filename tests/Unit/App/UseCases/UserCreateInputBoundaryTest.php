@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Framework;
 
-use App\UseCases\UserCreateInputBoundary;
+use App\UseCases\UserCreate\UserCreateInputBoundary;
 use PHPUnit\Framework\TestCase;
 
 class UserCreateInputBoundaryTest extends TestCase

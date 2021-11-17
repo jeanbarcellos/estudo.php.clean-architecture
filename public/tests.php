@@ -2,8 +2,8 @@
 
 use App\Adapters\Http\Controllers\PostController;
 use App\Domain\Events\UserCreatedEvent;
-use App\UseCases\UserCreateInputBoundary;
-use App\UseCases\UserCreateUseCase;
+use App\UseCases\UserCreate\UserCreate\UserCreate\UserCreateInputBoundary;
+use App\UseCases\UserCreate\UserCreateUseCase;
 use Framework\DI\Container;
 use Framework\DI\DependencyResolver;
 
