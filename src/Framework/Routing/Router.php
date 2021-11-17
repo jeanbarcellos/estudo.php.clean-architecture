@@ -81,6 +81,8 @@ class Router
 
     public function add(string $method, string $route, $action): self
     {
+        $route = '/' . ltrim(trim($route), '/');
+
         $this->routes[$method][$route] = $action;
         return $this;
     }
