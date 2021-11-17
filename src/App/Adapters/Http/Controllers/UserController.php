@@ -2,15 +2,15 @@
 
 namespace App\Adapters\Http\Controllers;
 
-use App\UseCases\UserCreateInputBoundary;
-use App\UseCases\UserCreateUseCase;
+use App\UseCases\UserCreate\UserCreateInputBoundary;
+use App\UseCases\UserCreate\UserCreateUseCase;
 use Core\Presentation\Presenter;
 use Framework\Http\RequestInterface;
 
 class UserController
 {
     /**
-     * @var \App\UseCases\UserCreateUseCase
+     * @var \App\UseCases\UserCreate\UserCreateUseCase
      */
     private $useCase;
 
