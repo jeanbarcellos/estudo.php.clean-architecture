@@ -4,16 +4,42 @@ namespace Tests\Unit\Framework\Http;
 
 use Framework\Http\Request;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class RequestTest extends TestCase
 {
-    private function createRequest($method, $path, $query = [], $body = [])
+    private function createRequest($method, $path, $query = [], $body = [], $files = [], $content = null): Request
     {
         $server = $_SERVER;
         $server['REQUEST_METHOD'] = $method;
         $server['REQUEST_URI'] = $path;
 
-        return new Request($query, $body, [], $_COOKIE, $_FILES, $server);
+        return new Request($query, $body, [], $_COOKIE, $files, $server, $content);
+    }
+
+    private function createRequestWithFiles($method, $path): Request
+    {
+        $stub01 = $this->createMock(UploadedFile::class);
+        $stub01->method('getClientOriginalName')->willReturn('teste01.jpg');
+
+        $stub02 = $this->createMock(UploadedFile::class);
+        $stub02->method('getClientOriginalName')->willReturn('teste02.jpg');
+
+        // Arrange
+        $files = [
+            'image01' => $stub01,
+            'image02' => $stub02
+        ];
+
+        return $this->createRequest($method, $path, [], [], $files);
+    }
+
+    private function createRequestBodyJson($method, $path, $content = '')
+    {
+        $request = $this->createRequest($method, $path, [], [], [], $content);
+        $request->headers->set('Content-Type', 'application/json');
+
+        return $request;
     }
 
     public function test_capture()
@@ -122,6 +148,45 @@ class RequestTest extends TestCase
 
         // Act
         $actual = $request->query('login', $default);
+
+        // Assert
+        $this->assertEquals($default, $actual);
+    }
+
+
+    public function test_file_ShouldReturnAllValues()
+    {
+        // Arrange
+        $request = $this->createRequestWithFiles('POST', '/test');
+
+        // Act
+        $actual = $request->file();
+
+        // Assert
+        $this->assertEquals('teste01.jpg', $actual['image01']->getClientOriginalName());
+        $this->assertEquals('teste02.jpg', $actual['image02']->getClientOriginalName());
+    }
+
+    public function test_file_ShouldReturnValue()
+    {
+        // Arrange
+        $request = $this->createRequestWithFiles('POST', '/test');
+
+        // Act
+        $actual = $request->file('image01');
+
+        // Assert
+        $this->assertEquals('teste01.jpg', $actual->getClientOriginalName());
+    }
+
+    public function test_file_ShouldReturnDefaultValue()
+    {
+        // Arrange
+        $request = $this->createRequestWithFiles('POST', '/test');
+        $default = 'jeanbarcellos';
+
+        // Act
+        $actual = $request->file('image03', $default);
 
         // Assert
         $this->assertEquals($default, $actual);
