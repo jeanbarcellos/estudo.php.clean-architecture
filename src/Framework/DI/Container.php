@@ -3,6 +3,7 @@
 namespace Framework\DI;
 
 use Closure;
+use Exception;
 use ReflectionClass;
 use ReflectionParameter;
 use RuntimeException;
@@ -61,7 +62,7 @@ class Container
         return (isset($this->singleton[$id]) && $this->singleton[$id] === true);
     }
 
-    public function instance(string $id, $operation)
+    public function instance(string $id, $operation): void
     {
         $this->instances[$id] = $operation;
     }
@@ -139,7 +140,7 @@ class Container
 
         try {
             $parameters = $this->resolveParemeters($constructor->getParameters());
-        } catch (ResolutionException $e) {
+        } catch (RuntimeException $e) {
             throw $e;
         }
 
