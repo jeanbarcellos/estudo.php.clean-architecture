@@ -6,7 +6,7 @@ use ArrayAccess;
 use Core\Interfaces\Arrayable;
 use RuntimeException;
 
-abstract class IOData implements ArrayAccess, Arrayable
+class IOData implements ArrayAccess, Arrayable
 {
     private $data;
 
