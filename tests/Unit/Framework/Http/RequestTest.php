@@ -13,6 +13,7 @@ class RequestTest extends TestCase
         $server = $_SERVER;
         $server['REQUEST_METHOD'] = $method;
         $server['REQUEST_URI'] = $path;
+        $server['CONTENT_TYPE'] = 'application/json';
 
         return new Request($query, $body, [], $_COOKIE, $files, $server, $content);
     }
@@ -28,7 +29,7 @@ class RequestTest extends TestCase
         // Arrange
         $files = [
             'image01' => $stub01,
-            'image02' => $stub02
+            'image02' => $stub02,
         ];
 
         return $this->createRequest($method, $path, [], [], $files);
@@ -94,7 +95,6 @@ class RequestTest extends TestCase
         $request = $this->createRequest('POST', '/test', [], $body);
         $default = 'jeanbarcellos';
 
-
         // Act
         $actual = $request->body('login', $default);
 
@@ -145,14 +145,12 @@ class RequestTest extends TestCase
         $request = $this->createRequest('POST', '/test', $query);
         $default = 'jeanbarcellos';
 
-
         // Act
         $actual = $request->query('login', $default);
 
         // Assert
         $this->assertEquals($default, $actual);
     }
-
 
     public function test_file_ShouldReturnAllValues()
     {
